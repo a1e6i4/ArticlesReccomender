@@ -59,13 +59,24 @@ class ArticleViewSet(viewsets.ViewSet):
         query = request.query_params.get("q", None)
         doc_srch = ElsSearch(f"(KEY {query}) AND SUBJAREA(COMP)", 'scopus')
         doc_srch.execute(client, get_all=False)
-        #TODO save articles
+
+        for article in doc_srch.results:
+            try:
+                new_article = Article(
+                    doi = article["prism:doi"],
+                    title = article["dc:title"],
+                    url = article["prism:url"]
+                )
+                new_article.save()
+            except Exception as e:
+                print(e)
+
         return Response(doc_srch.results)
 
     @action(detail=False, methods=['get'])
     def like(self, request):
-        article = int(request.query_params.get('article'))
-        article = Article.objects.get(pk=article)
+        doi = request.query_params.get('doi')
+        article = Article.objects.get(doi=doi)
 
         user_id = request.query_params.get('user_id')
         rating = request.query_params.get('rating', 5)

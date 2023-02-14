@@ -33,20 +33,27 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['like'])
 def like(message):
-    article_id = message.text.split()[1]
-    result = requests.get(f"{BACK_IP}/api/article/like", params={'article': article_id}).text
-    bot.reply_to(message, result)
+    article_doi = message.text.split()[1]
+    result = requests.get(f"{BACK_IP}/api/article/like", params={'doi': article_doi})
+
+    if result.status_code == 200:
+        bot.reply_to(message, 'Ok!')
+    else:
+        bot.reply_to(message, 'smth went wrong')
 
 
 @bot.message_handler(commands=['recomend'])
 def recommend(message):
-    bot.reply_to(message, """\
-    Умные алгоритмы находятся в разработке
-""")
+    result = json.loads(requests.get(f"{BACK_IP}/api/article/recommend").text)
+    msg = "\n\n".join([f"{r['title']}\n{r['doi']}\n{r['url']}" for r in result])
+
+    bot.reply_to(message, msg)
 
 
 @bot.message_handler(func=lambda message: True)
 def search(message):
     q = message.text
-    result = requests.get(f"{BACK_IP}/api/article/search", params={'q': q}).text
-    bot.reply_to(message, result)
+    result = json.loads(requests.get(f"{BACK_IP}/api/article/search", params={'q': q}).text)[0:10]
+
+    msg = "\n\n".join([f"{r['prism:title']}\n{r['prism:doi']}\n{r['prism:url']}" for r in result])
+    bot.reply_to(message, msg)
