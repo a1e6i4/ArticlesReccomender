@@ -11,14 +11,13 @@ welcome_message = """\
 
 
 API_TOKEN = '6136534812:AAE8Iuxq_4NUpja-cCZ8BqGdaUoJ1KVXohU'
-BACK_IP = 'http://45.130.42.85'
+BACK_IP = 'http://185.225.35.21'
 
 bot = telebot.TeleBot(API_TOKEN)
 
 
 @bot.message_handler(commands=['help', 'start'])
 def send_welcome(message):
-    bot.reply_to(message, )
     bot.reply_to(message, welcome_message)
 
     json_data = {
@@ -57,3 +56,6 @@ def search(message):
 
     msg = "\n\n".join([f"{r['prism:title']}\n{r['prism:doi']}\n{r['prism:url']}" for r in result])
     bot.reply_to(message, msg)
+
+
+bot.infinity_polling()
