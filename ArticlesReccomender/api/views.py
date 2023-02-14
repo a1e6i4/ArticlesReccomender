@@ -81,7 +81,7 @@ class ArticleViewSet(viewsets.ViewSet):
         user_id = request.query_params.get('user_id')
         rating = request.query_params.get('rating', 5)
 
-        user = User.objects.get(t_id=user_id)
+        user = User.objects.get(id_t=user_id)
         like = Like(article=article,
                     user=user,
                     rating=rating)

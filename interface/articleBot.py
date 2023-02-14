@@ -54,7 +54,9 @@ def search(message):
     q = message.text
     result = json.loads(requests.get(f"{BACK_IP}/api/article/search", params={'q': q}).text)[0:10]
 
-    msg = "\n\n".join([f"{r['prism:title']}\n{r['prism:doi']}\n{r['prism:url']}" for r in result])
+    print(result)
+
+    msg = "\n\n".join([f"{r['dc:title']}\n{r['prism:doi']}\n{r['prism:url']}" for r in result])
     bot.reply_to(message, msg)
 
 
