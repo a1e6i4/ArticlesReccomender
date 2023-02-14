@@ -63,9 +63,9 @@ class ArticleViewSet(viewsets.ViewSet):
         for article in doc_srch.results:
             try:
                 new_article = Article(
-                    doi = article["prism:doi"],
-                    title = article["dc:title"],
-                    url = article["prism:url"]
+                    doi=article["prism:doi"],
+                    title=article["dc:title"],
+                    url=article["prism:url"]
                 )
                 new_article.save()
             except Exception as e:

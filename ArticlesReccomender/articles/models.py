@@ -11,7 +11,7 @@ class User(User):
 
 class Article(models.Model):
     title = models.CharField(max_length=1000, default='')
-    doi = models.CharField(max_length=100)
+    doi = models.CharField(max_length=100, unique=True)
     keywords = models.TextField(default='')
     url = models.CharField(max_length=1000)
 
