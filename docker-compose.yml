@@ -19,11 +19,11 @@ services:
       - static_value:/ArticlesReccomender/static/
       - media_value:/ArticlesReccomender/media/
     ports:
-      - 80:80
+      - 8000:8000
     depends_on:
       - db
     env_file:
-      - ./.env
+      - ./ArticlesReccomender/.env
 
   bot:
     build:
@@ -35,7 +35,7 @@ services:
       - db
       - backend
     env_file:
-      - ./.env
+      - ./interface/.env
 
 volumes:
   static_value:
