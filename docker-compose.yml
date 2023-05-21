@@ -14,7 +14,7 @@ services:
       bash -c "python -u manage.py makemigrations &&
       python manage.py migrate &&
       python manage.py collectstatic --noinput &&
-      python manage.py runserver 0.0.0.0:80"
+      python manage.py runserver 0.0.0.0:8000"
     volumes:
       - static_value:/ArticlesReccomender/static/
       - media_value:/ArticlesReccomender/media/
