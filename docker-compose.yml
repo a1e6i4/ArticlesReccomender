@@ -30,7 +30,7 @@ services:
       context: ./interface
       dockerfile: Dockerfile
     command: >
-      bash -c "python -u manage.py articleBot.py"
+      bash -c "python -u articleBot.py"
     depends_on:
       - db
       - backend
