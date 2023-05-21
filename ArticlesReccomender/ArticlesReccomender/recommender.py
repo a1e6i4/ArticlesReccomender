@@ -7,7 +7,7 @@ from surprise import Dataset, Reader
 class SVDRecommender:
     def __init__(self):
         self.algo = SVD()
-        self.fit()
+        #self.fit()
 
     def fit(self):
         likes = Like.objects.all()
