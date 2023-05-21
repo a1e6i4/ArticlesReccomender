@@ -8,3 +8,5 @@ Django
 djangorestframework
 markdown
 django-filter
+numpy
+scikit-surprise

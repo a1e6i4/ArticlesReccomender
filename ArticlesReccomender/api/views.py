@@ -8,6 +8,7 @@ from elsapy.elssearch import ElsSearch
 from elsapy.elsclient import ElsClient
 import json
 from collections import Counter
+from ArticlesReccomender.recommender import recommendation_engine
 
 
 with open("api/configs.json", "r") as f:
@@ -79,7 +80,7 @@ class ArticleViewSet(viewsets.ViewSet):
         article = Article.objects.get(doi=doi)
 
         user_id = request.query_params.get('user_id')
-        rating = request.query_params.get('rating', 5)
+        rating = int(request.query_params.get('rating'))
 
         user = User.objects.get(id_t=user_id)
         like = Like(article=article,
@@ -91,10 +92,5 @@ class ArticleViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['get'])
     def recommend(self, request):
-        user_id = request.query_params.get('user_id')
-
-        user = User.objects.get(t_id=user_id)
-        likes = Counter([like.article for like in Like.objects.all()])
-        most_popular = [x[0] for x in likes.most_common()[0:5]]
-
-        return Response(ArticleSerializer(most_popular, many=True).data)
+        recomendations = recommendation_engine.get_recommendations(request.query_params.get('user_id'))
+        return Response(ArticleSerializer(recomendations, many=True).data)
