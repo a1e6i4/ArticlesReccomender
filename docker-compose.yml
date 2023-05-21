@@ -23,7 +23,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./ArticlesReccomender/.env
+      - ./.env
 
   bot:
     build:
@@ -35,7 +35,7 @@ services:
       - db
       - backend
     env_file:
-      - ./interface/.env
+      - ./.env
 
 volumes:
   static_value:
