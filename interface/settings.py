@@ -1,9 +1,9 @@
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from telebot.handler_backends import State, StatesGroup
+import os
 
-API_TOKEN = '6136534812:AAE8Iuxq_4NUpja-cCZ8BqGdaUoJ1KVXohU'
-#BACK_IP = 'http://185.225.35.21'
-BACK_IP = 'http://127.0.0.1:8000'
+API_TOKEN = os.getenv('API_TOKEN')
+BACK_IP = os.getenv('BACK_IP')
 
 
 class BotStates(StatesGroup):

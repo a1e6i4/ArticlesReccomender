@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data/:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+
+  backend:
+    build:
+      context: ./ArticlesReccomender
+      dockerfile: Dockerfile
+    command: >
+      bash -c "python -u manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      python manage.py runserver 0.0.0.0:80"
+    volumes:
+      - static_value:/ArticlesReccomender/static/
+      - media_value:/ArticlesReccomender/media/
+    ports:
+      - 80:80
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+
+  bot:
+    build:
+      context: ./interface
+      dockerfile: Dockerfile
+    command: >
+      bash -c "python -u manage.py articleBot.py"
+    depends_on:
+      - db
+      - backend
+    env_file:
+      - ./.env
+
+volumes:
+  static_value:
+  media_value:
+  postgres_data:

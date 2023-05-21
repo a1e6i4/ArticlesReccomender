@@ -1,3 +1,5 @@
+import os
+
 from articles.models import *
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -11,11 +13,8 @@ from collections import Counter
 from ArticlesReccomender.recommender import recommendation_engine
 
 
-with open("api/configs.json", "r") as f:
-    config = json.load(f)
-
-client = ElsClient(config['apikey'])
-client.inst_token = config['insttoken']
+client = ElsClient(os.getenv('SCOPUS_API_KEY'))
+client.inst_token = ""
 
 
 class UserViewSet(viewsets.ViewSet):
@@ -58,7 +57,7 @@ class ArticleViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['get'])
     def search(self, request):
         query = request.query_params.get("q", None)
-        doc_srch = ElsSearch(f"(KEY {query}) AND SUBJAREA(COMP)", 'scopus')
+        doc_srch = ElsSearch(f"((TITLE {query}) OR (KEY {query})) AND SUBJAREA(COMP)", 'scopus')
         doc_srch.execute(client, get_all=False)
 
         for article in doc_srch.results:
