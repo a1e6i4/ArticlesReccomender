@@ -9,3 +9,4 @@ markdown
 django-filter
 numpy
 scikit-surprise
+psycopg2-binary
